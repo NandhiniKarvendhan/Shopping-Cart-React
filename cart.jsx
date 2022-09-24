@@ -1,26 +1,32 @@
-// provide a button and use onClick={moveToCart} to move 1 item into the Shopping Cart
+// Ex 3 - write out all items with their stock number
+// provide a button and use onClick to move 1 item into the Shopping Cart
 // use React.useState to keep track of items in the Cart.
-// use React.useState to keep track of Stock items
 // list out the Cart items in another column
 function NavBar({ menuitems, minstock }) {
-  const [cart, setCart] = React.useState([]);
+  const { Card, Button } = ReactBootstrap;
   const [stock, setStock] = React.useState(menuitems);
-  const { Button } = ReactBootstrap;
-  // event apple:2
+  const [cart, setCart] = React.useState([]);
   const moveToCart = (e) => {
-    let [name, num] = e.target.innerHTML.split(":"); // innerHTML should be format name:3
-    // use newStock = stock.map to find "name" and decrease number in stock by 1
-    // only if instock is >=  do we move item to Cart and update stock
-    let newStock = stock.map((item, index) => {
-      if (item.name == name) item.instock--;
+    let [name, num] = e.target.innerHTML.split(":");
+    if (num <= 0) return; // zero items in stock
+    // get item with name from stock and update stock
+    let item = stock.filter((item) => item.name == name);
+    // check if its in stock ie item.instock > 0
+    let newStock = stock.map((item) => {
+      if (item.name == name) {
+        item.instock--;
+      }
       return item;
     });
-    console.log(name);
-    setStock(newStock);
+    // now filter out stock items == 0;
+
+    setStock([...newStock]);
+    setCart([...cart, ...item]); // for now don't worry about repeat items in Cart
+    console.log(`Cart: ${JSON.stringify(cart)}`);
   };
-  const updatedList = stock.map((item, index) => {
+  const updatedList = menuitems.map((item, index) => {
     return (
-      <Button onClick={moveToCart} key={index}>
+      <Button key={index} onClick={moveToCart}>
         {item.name}:{item.instock}
       </Button>
     );
@@ -28,11 +34,27 @@ function NavBar({ menuitems, minstock }) {
   // note that React needs to have a single Parent
   return (
     <>
-      <ul style={{ listStyleType: "none" }}>{updatedList}</ul>
+      <ul key="stock" style={{ listStyleType: "none" }}>
+        {updatedList}
+      </ul>
       <h1>Shopping Cart</h1>
+      <Cart cartitems={cart}> Cart Items</Cart>
     </>
   );
 }
+function Cart({ cartitems }) {
+  const { Card, Button } = ReactBootstrap;
+  console.log("rendering Cart");
+  const updatedList = cartitems.map((item, index) => {
+    return <Button key={index}>{item.name}</Button>;
+  });
+  return (
+    <ul style={{ listStyleType: "none" }} key="cart">
+      {updatedList}
+    </ul>
+  );
+}
+
 const menuItems = [
   { name: "apple", instock: 2 },
   { name: "pineapple", instock: 3 },
