@@ -17,7 +17,7 @@ Users can click any product in the Product list, and if that product is in stock
 
 ## License information:
 
-MIT License
+MIT LICENSE 
 
 Copyright (c) 2023 Nandhini K
 
