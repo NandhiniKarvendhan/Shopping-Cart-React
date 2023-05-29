@@ -7,6 +7,8 @@ This project creates a simple shopping cart. The shopping cart component contain
 
 Users can click any product in the Product list, and if that product is in stock, it will be added to the Shopping cart.
 
+## [Demo](https://nandhinikarvendhan.github.io/Shopping-Cart-React/)
+
 ## How to run
 
 1. Download or clone this repository.
